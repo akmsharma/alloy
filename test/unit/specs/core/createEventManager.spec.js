@@ -30,9 +30,7 @@ describe("createEventManager", () => {
     config = createConfig({
       orgId: "ABC123",
       onBeforeEventSend: jasmine.createSpy(),
-      debugEnabled: true,
-      datasetId: "DATASETID",
-      schemaId: "SCHEMAID"
+      debugEnabled: true
     });
     logger = jasmine.createSpyObj("logger", ["error", "warn"]);
     lifecycle = jasmine.createSpyObj("lifecycle", {
@@ -79,9 +77,7 @@ describe("createEventManager", () => {
         expect(requestPayload.mergeConfigOverrides).toHaveBeenCalledWith({
           orgId: "ABC123",
           dataCollection: {
-            synchronousValidation: true,
-            datasetId: "DATASETID",
-            schemaId: "SCHEMAID"
+            synchronousValidation: true
           }
         });
       });
@@ -99,6 +95,7 @@ describe("createEventManager", () => {
           expect(lifecycle.onBeforeEvent).toHaveBeenCalledWith({
             event,
             isViewStart: true,
+            scopes: undefined,
             payload: requestPayload
           });
           expect(consent.awaitConsent).not.toHaveBeenCalled();

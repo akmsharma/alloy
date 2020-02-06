@@ -10,16 +10,24 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { boolean, callback } from "../../utils/validation";
+/**
+ * Group an array by a key getter provided
+ * @param {Array} arr Array to iterate over.
+ * @param {Function} keyGetter The key getter by which to group.
+ * @returns {Object}
+ */
+export default (arr, keyGetter) => {
+  const result = {};
 
-const configValidators = {
-  thirdPartyCookiesEnabled: boolean().default(true),
-  idMigrationEnabled: boolean().default(true)
+  arr.forEach(item => {
+    const key = keyGetter(item);
+
+    if (!result[key]) {
+      result[key] = [];
+    }
+
+    result[key].push(item);
+  });
+
+  return result;
 };
-
-// #if _REACTOR
-// Not much need to validate since we are our own consumer.
-configValidators.reactorRegisterGetEcid = callback().default(() => {});
-// #endif
-
-export default configValidators;
